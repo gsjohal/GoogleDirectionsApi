@@ -16,11 +16,13 @@ public class Main {
 
         System.out.print("Enter origin: ");
         String origin = scanner.nextLine();
+        origin = origin.replaceAll(" ","");
 
         System.out.print("\nEnter destination: ");
         String dest = scanner.nextLine();
+        dest = dest.replaceAll(" ","");
 
-        System.out.print("\nEnter mode: ");
+        System.out.print("\nEnter preferred mode travelling: ");
         String mode = scanner.nextLine();
 
         System.out.print("\nEnter avoid: ");
@@ -38,14 +40,21 @@ public class Main {
 
                 JsonObject stepsObject = legs.get(0).getAsJsonObject();
 
+                String distance = stepsObject.getAsJsonObject("distance").get("text").toString();
+                String duration = stepsObject.getAsJsonObject("duration").get("text").toString();
+
+                System.out.println("\nTotal duration "+duration);
+                System.out.println("Total distance "+distance);
+                System.out.println();
+
                 JsonArray stepsArray = stepsObject.getAsJsonArray("steps");
 
                 for(int i = 0; i < stepsArray.size(); i++ ){
                     JsonObject stepsElement = stepsArray.get(i).getAsJsonObject();
-                    String distance = removeQuotes(stepsElement.get("distance").getAsJsonObject().get("text").toString());
+                    distance = removeQuotes(stepsElement.get("distance").getAsJsonObject().get("text").toString());
                     String direction = removeQuotes(stepsElement.get("html_instructions").toString());
                     direction = direction.replaceAll("\\<[^>]*>","");
-                    String duration = removeQuotes(stepsElement.get("duration").getAsJsonObject().get("text").toString());
+                    duration = removeQuotes(stepsElement.get("duration").getAsJsonObject().get("text").toString());
                     System.out.println("Step "+(i+1)+":");
                     System.out.println("In "+distance+", "+direction+". This should take you "+duration+".\n");
                 }
